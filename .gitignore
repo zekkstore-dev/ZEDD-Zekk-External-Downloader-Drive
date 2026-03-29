@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+*.log
+
+# Project Specific
+backend/bin/
+backend/ZEDD_DOWNLOADS/
+ZEDD_DOWNLOADS/
+.ipynb_checkpoints/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db

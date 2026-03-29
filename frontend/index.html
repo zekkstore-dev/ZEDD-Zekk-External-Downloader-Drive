@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEDD - Zekk External Downloader Drive</title>
+    <meta name="description" content="Unduh video dan file dari mana saja, simpan langsung ke Google Drive kamu. Didukung yt-dlp.">
+    <meta name="theme-color" content="#060d1f">
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Animasi -->
+    <div class="bg-blobs" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="page-wrapper">
+        <!-- ── Header / Navbar ── -->
+        <header class="navbar" role="banner">
+            <div class="logo" aria-label="Zedd Downloader">
+                <img src="images/logo.png" alt="ZEDD Logo" class="logo-img">
+                <span class="logo-wordmark">EDD</span>
+                <span class="logo-badge">v1.0</span>
+            </div>
+            <div id="user-area">
+                <!-- State: Belum Login -->
+                <button id="login-btn" class="btn btn-login" aria-label="Login dengan akun Google">
+                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z" fill="#EA4335"/></svg>
+                    Login dengan Google
+                </button>
+                <!-- State: Sudah Login (tersembunyi awalnya) -->
+                <div id="user-profile" class="user-profile hidden" role="status" aria-live="polite">
+                    <img id="user-avatar" src="" alt="Foto profil pengguna" class="user-avatar">
+                    <span id="user-name" class="user-name"></span>
+                    <button id="logout-btn" class="btn btn-logout" aria-label="Keluar dari akun">Keluar</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ── Konten Utama ── -->
+        <main class="main-content" role="main">
+            <div class="hero">
+                <h1 class="hero-title">
+                    Unduh Apa Saja,<br>
+                    <span class="gradient-text">Simpan ke Drive.</span>
+                </h1>
+                <p class="hero-subtitle">YouTube · TikTok · Instagram · Direct Link · dan ratusan sumber lainnya</p>
+            </div>
+
+            <!-- Kartu Download Utama -->
+            <div class="card" role="region" aria-label="Form pengunduhan">
+                <!-- Input URL -->
+                <div class="input-row" role="group" aria-label="Masukkan tautan">
+                    <div class="input-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </div>
+                    <input
+                        id="url-input"
+                        type="url"
+                        class="url-input"
+                        placeholder="Tempel tautan di sini (YouTube, TikTok, Instagram, direct link...)"
+                        aria-label="Masukkan URL yang ingin diunduh"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <button id="download-btn" class="btn btn-download" aria-label="Mulai unduh dan simpan ke Drive">
+                        <span class="btn-text">Unduh & Simpan</span>
+                        <span class="btn-spinner hidden" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <!-- Opsi Lanjutan -->
+                <details class="advanced" id="advanced-options">
+                    <summary class="advanced-toggle">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        Opsi lanjutan
+                    </summary>
+                    <div class="advanced-body">
+                        <label for="folder-id-input" class="field-label">
+                            ID Folder Google Drive Tujuan
+                            <span class="field-hint">(Biarkan kosong → folder "ZEDD_DOWNLOADS" otomatis dibuat)</span>
+                        </label>
+                        <input
+                            id="folder-id-input"
+                            type="text"
+                            class="text-input"
+                            placeholder="Contoh: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms"
+                            aria-describedby="folder-hint"
+                        >
+                        <p id="folder-hint" class="field-hint" style="margin-top:.5rem">
+                            💡 Cara cari Folder ID: buka Google Drive → klik folder → lihat URL setelah <code>/folders/</code>
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Status & Progres -->
+                <div id="status-area" class="status-area hidden" role="status" aria-live="polite" aria-atomic="true">
+                    <div class="status-header">
+                        <div class="status-icon" id="status-icon" aria-hidden="true">⏳</div>
+                        <div class="status-texts">
+                            <p id="status-text" class="status-main">Mempersiapkan...</p>
+                            <p id="status-sub"  class="status-sub"></p>
+                        </div>
+                        <span id="progress-percent" class="progress-pct" aria-label="Progres">0%</span>
+                    </div>
+                    <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div id="progress-bar" class="progress-fill"></div>
+                    </div>
+                    <!-- Link hasil jika sukses -->
+                    <div id="result-link-area" class="result-area hidden">
+                        <a id="result-link" href="#" target="_blank" rel="noopener noreferrer" class="drive-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            Buka di Google Drive
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Platform yang Didukung -->
+            <div class="platform-chips" aria-label="Platform yang didukung">
+                <span class="chip">YouTube</span>
+                <span class="chip">TikTok</span>
+                <span class="chip">Instagram</span>
+                <span class="chip">Twitter / X</span>
+                <span class="chip">Facebook</span>
+                <span class="chip">SoundCloud</span>
+                <span class="chip">Direct Link</span>
+                <span class="chip">+1000 lainnya</span>
+            </div>
+
+            <!-- ── Panel Setup Google (hanya muncul saat belum login) ── -->
+            <div id="setup-panel" class="setup-panel" role="complementary" aria-label="Panduan setup Google">
+                <div class="setup-header">
+                    <span class="setup-icon">⚙️</span>
+                    <div>
+                        <p class="setup-title">Belum terhubung ke Google?</p>
+                        <p class="setup-desc">Ikuti langkah berikut untuk menghubungkan akun Google Drive kamu.</p>
+                    </div>
+                    <button class="setup-dismiss" id="setup-dismiss-btn" aria-label="Tutup panduan" title="Tutup">✕</button>
+                </div>
+
+                <ol class="setup-steps">
+                    <li class="setup-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <span class="step-label">Buat Project Google Cloud</span>
+                            <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener noreferrer" class="step-link">
+                                Buka Google Cloud Console
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="setup-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <span class="step-label">Aktifkan Google Drive API</span>
+                            <a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" rel="noopener noreferrer" class="step-link">
+                                Aktifkan Drive API
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="setup-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <span class="step-label">Buat OAuth 2.0 Client ID <span class="step-note">(tipe: Web App · Redirect URI: <code>http://localhost:8000/auth/callback</code>)</span></span>
+                            <a href="https://console.cloud.google.com/apis/credentials/oauthclient" target="_blank" rel="noopener noreferrer" class="step-link">
+                                Buat Credentials
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="setup-step">
+                        <span class="step-num">4</span>
+                        <div class="step-content">
+                            <span class="step-label">Salin Client ID &amp; Secret ke file <code>backend/.env</code></span>
+                            <span class="step-link step-link-done">
+                                Lalu jalankan ulang <code>start.bat</code> ✓
+                            </span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <p>Dibuat dengan ❤ oleh <strong>Zekk Store</strong> · Didukung yt‑dlp &amp; Google Drive API</p>
+            <nav class="footer-socials" aria-label="Media sosial Zekk">
+                <!-- GitHub -->
+                <a href="https://github.com/ZekkCode" target="_blank" rel="noopener noreferrer"
+                   class="social-link" aria-label="GitHub ZekkCode" title="GitHub — ZekkCode">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577
+                        0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755
+                        -1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998
+                        .108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22
+                        -.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006
+                        2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23
+                        1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896
+                        -.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/Zekksparow" target="_blank" rel="noopener noreferrer"
+                   class="social-link" aria-label="Instagram Zekksparow" title="Instagram — @Zekksparow">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069
+                        1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058
+                        -1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265
+                        -.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266
+                        -.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98
+                        6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98
+                        6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618
+                        6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617
+                        -6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162
+                        6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0
+                        10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406
+                        -11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44
+                        s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <!-- TikTok -->
+                <a href="https://tiktok.com/@Zekksparow" target="_blank" rel="noopener noreferrer"
+                   class="social-link" aria-label="TikTok Zekksparow" title="TikTok — @Zekksparow">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62
+                        4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02
+                        8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03
+                        -2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44
+                        3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04
+                        -1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77
+                        -1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                    </svg>
+                </a>
+            </nav>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
