@@ -14,7 +14,7 @@ Proyek ini adalah **upgrade dan kelanjutan langsung** dari repo lama:
 
 > 👉 [**Download-Video-Lewat-Network-Capture**](https://github.com/ZekkCode/Download-Video-Lewat-Network-Capture)
 
-Dulu, cara kerjanya masih manual banget — ngandelin *network capture* di browser buat nyuri URL file-nya, terus baru diproses. Ribet dan gak reliable buat semua situs.
+Dulu, cara kerjanya masih manual banget ngandelin *network capture* di browser buat nyuri URL file-nya, terus baru diproses. Ribet dan gak reliable buat semua situs.
 
 **ZEDD v2.0 hadir sebagai evolusinya:**
 
