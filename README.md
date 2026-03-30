@@ -2,13 +2,13 @@
   <img src="frontend/images/logo.png" alt="ZEDD Logo" width="120">
 </p>
 
-# ⚡ ZEDD — Zekk External Downloader Drive
+# ZEDD - (Zekk External Downloader Drive)
 
 Bosen download video terus harus upload manual ke Drive? <br> **ZEDD** hadir buat nyelesein masalah itu. Tool ini ngebantu kamu buat narik file dari internet (YouTube, TikTok, Instagram, dll) dan langsung lempar ke Google Drive kamu tanpa perlu mampir dulu ke storage lokal yang penuh.
 
 ---
 
-## 🌟 Kenapa pake ZEDD?
+## Kenapa pake ZEDD?
 - **Gak Makan Kuota Lokal**: File langsung dikirim ke Cloud (via server backend).
 - **Support 1000+ Situs**: Pake tenaga `yt-dlp`, apa aja bisa ditarik.
 - **Tampilan Premium**: UI cakep pake efek *glassmorphism* yang manjain mata.
@@ -16,7 +16,7 @@ Bosen download video terus harus upload manual ke Drive? <br> **ZEDD** hadir bua
 
 ---
 
-## 🛠️ Persiapan Awal
+## Persiapan Awal
 ### Prasyarat
 | Tool | Kebutuhan |
 |------|-----------|
@@ -27,7 +27,7 @@ Bosen download video terus harus upload manual ke Drive? <br> **ZEDD** hadir bua
 
 ---
 
-## 🚀 Cara Pakai (Gampang Banget!)
+## Cara Pakai (Gampang Banget!)
 
 ### 1. Setting Kunci (API)
 Aplikasi ini butuh "kunci" (Client ID & Secret) dari Google Cloud. Tapi tenang, kunci asli kamu jangan pernah di-share! 

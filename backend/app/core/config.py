@@ -1,43 +1,33 @@
+# ───────────────────────────────────────────────────────────────
+#  ZEDD - Backend Configuration
+# ───────────────────────────────────────────────────────────────
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Memuat variabel lingkungan dari file .env
-# #bahasa indonesia: Memuat konfigurasi dari file rAHASIA .env
-load_dotenv()
+# Ambil path root proyek
+BASE_DIR = Path(__file__).parent.parent.parent
 
-# --- Konfigurasi Global ---
-# #bahasa indonesia: Menentukan mode operasi (LOKAL atau DRIVE)
-LOCAL_MODE    = os.getenv("LOCAL_MODE", "true").lower() in ("true", "1", "yes")
-LOCAL_DL_DIR  = os.getenv("LOCAL_DOWNLOAD_DIR", "").strip()
+# Load file .env (Pastikan file ini ada di folder backend/)
+load_dotenv(BASE_DIR / ".env")
 
-# Google OAuth Credentials
-CLIENT_ID     = os.getenv("GOOGLE_CLIENT_ID", "")
-CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
-REDIRECT_URI  = os.getenv("REDIRECT_URI", "http://localhost:8000/auth/callback")
-FRONTEND_URL  = os.getenv("FRONTEND_URL", "http://127.0.0.1:5500")
+# Konfigurasi Google Drive
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI", "http://localhost:8000/auth/callback")
 
-# Cakupan akses Google Drive
-SCOPES = [
-    "https://www.googleapis.com/auth/drive.file",
-    "openid",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email",
-]
+# Pengaturan Unduhan
+# Jika True, file disimpan di Desktop. Jika False, diupload ke Drive.
+LOCAL_MODE = os.getenv("LOCAL_MODE", "false").lower() == "true"
 
-# --- FFmpeg Binaries ---
-# #bahasa indonesia: Menambahkan folder bin ke PATH sistem agar FFmpeg bisa digunakan
-BIN_DIR = Path(__file__).parent.parent.parent / "bin"
+# Folder sementara untuk proses download
+DOWNLOAD_TEMP_DIR = BASE_DIR / "tmp"
+DOWNLOAD_TEMP_DIR.mkdir(exist_ok=True)
+
+# Path FFmpeg (Jika ada di folder bin lokal)
+BIN_DIR = BASE_DIR / "bin"
 if BIN_DIR.exists():
-    os.environ["PATH"] = str(BIN_DIR) + os.pathsep + os.environ.get("PATH", "")
+    os.environ["PATH"] += os.pathsep + str(BIN_DIR.absolute())
 
-def get_local_dl_dir() -> Path:
-    """Mendapatkan direktori unduhan lokal. Default ke Desktop/ZEDD_DOWNLOADS."""
-    if LOCAL_DL_DIR:
-        p = Path(LOCAL_DL_DIR)
-    else:
-        desktop = Path.home() / "Desktop"
-        p = desktop / "ZEDD_DOWNLOADS"
-    
-    p.mkdir(parents=True, exist_ok=True)
-    return p
+# Pesan Logika dalam Bahasa Indonesia:
+# Memastikan semua variabel lingkungan dimuat dengan benar sebelum aplikasi dijalankan.

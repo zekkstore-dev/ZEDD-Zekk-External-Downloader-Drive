@@ -1,7 +1,9 @@
 from pydantic import BaseModel
+from typing import Optional
 
-# #bahasa indonesia: Model data untuk request pengunduhan
 class DownloadRequest(BaseModel):
     url: str
-    folder_id: str = ""
-    session_token: str = ""   # Kosong jika LOCAL_MODE=true
+    filename: Optional[str] = None
+
+# Komentar Bahasa Indonesia:
+# Skema data untuk memvalidasi input dari user saat melakukan request download.
