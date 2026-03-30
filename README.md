@@ -8,6 +8,28 @@ Bosen download video terus harus upload manual ke Drive? <br> **ZEDD** hadir bua
 
 ---
 
+## 🔗 Asal Usul Proyek
+
+Proyek ini adalah **upgrade dan kelanjutan langsung** dari repo lama:
+
+> 👉 [**Download-Video-Lewat-Network-Capture**](https://github.com/ZekkCode/Download-Video-Lewat-Network-Capture)
+
+Dulu, cara kerjanya masih manual banget — ngandelin *network capture* di browser buat nyuri URL file-nya, terus baru diproses. Ribet dan gak reliable buat semua situs.
+
+**ZEDD v2.0 hadir sebagai evolusinya:**
+
+| Aspek | Versi Lama (Network Capture) | ZEDD v2.0 (Sekarang) |
+|---|---|---|
+| Metode Download | Intercept URL via network tab | Langsung pake `yt-dlp` (support 1000+ situs) |
+| Arsitektur | Script tunggal / monolitik | Modular MVC (FastAPI) |
+| Auth Google | Manual / tidak ada | OAuth 2.0 otomatis |
+| FFmpeg | Install manual | **Auto-install via `start.bat`** |
+| Output | Lokal di komputer | Langsung ke Google Drive |
+
+Jadi kalau kamu pernah pake versi lama itu, ZEDD ini adalah versi yang jauh lebih powerful dan gampang dipake. 🚀
+
+---
+
 ## Kenapa pake ZEDD?
 - **Gak Makan Kuota Lokal**: File langsung dikirim ke Cloud (via server backend).
 - **Support 1000+ Situs**: Pake tenaga `yt-dlp`, apa aja bisa ditarik.
